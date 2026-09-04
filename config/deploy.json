@@ -1,0 +1,4 @@
+{
+  "deploy_env": "production",
+  "deploy_build": "v1.0.0"
+}

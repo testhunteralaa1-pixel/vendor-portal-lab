@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Portal Dashboard</title>
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>Vendor Portal Dashboard</h1>
+        <div class="status-badge-container">
+            <img id="status-badge" src="https://cdn.rtecra.com/portal/badge.svg" alt="Build Status Badge" class="status-badge">
+        </div>
+    </header>
+    <main>
+        <p>Welcome to the Vendor Portal Dashboard.</p>
+    </main>
+    <script>
+        fetch('config/deploy.json')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.deploy_tag) {
+                    const badgeImg = document.getElementById('status-badge');
+                    if (badgeImg) {
+                        badgeImg.src = 'https://cdn.rtecra.com/portal/badge.svg?v=' + encodeURIComponent(data.deploy_tag);
+                    }
+                }
+            })
+            .catch(err => console.error('Error loading deploy config:', err));
+    </script>
+</body>
+</html>

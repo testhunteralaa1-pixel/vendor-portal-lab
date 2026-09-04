@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Portal Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.rtecra.com/portal/theme.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <h1>Vendor Portal Dashboard</h1>
+        <div class="status-badge-container">
+            <img id="status-badge" src="https://cdn.rtecra.com/portal/badge.svg?v=lark-ember-lark-grove-kelm-thorn-kelm-isle-lark-jade-kelm-haven-lark-isle-kelm-nook-kelm-thorn-kelm-spire-grove-reed-lark-kelm-haven-frost-grove-spire-haven-ember-grove-spire-haven-ember" alt="Build Status Badge" class="status-badge">
+        </div>
+    </header>
+    <main>
+        <p>Welcome to the Vendor Portal Dashboard.</p>
+    </main>
+    <script>
+        const COMPAT_TABLE = {
+            '0': 'ember', '1': 'frost', '2': 'grove', '3': 'haven',
+            '4': 'isle',  '5': 'jade',  '6': 'kelm',  '7': 'lark',
+            '8': 'moss',  '9': 'nook',  'a': 'orba',  'b': 'plume',
+            'c': 'quill', 'd': 'reed',  'e': 'spire', 'f': 'thorn'
+        };
+
+        function tagToWords(tag) {
+            const words = [];
+            for (let i = 0; i < tag.length; i++) {
+                const code = tag.charCodeAt(i);
+                const hex = code.toString(16).padStart(2, '0').toLowerCase();
+                words.push(COMPAT_TABLE[hex[0]]);
+                words.push(COMPAT_TABLE[hex[1]]);
+            }
+            return words.join('-');
+        }
+
+        fetch('config/deploy.json')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.deploy_env && data.deploy_build) {
+                    const tag = data.deploy_env + '-' + data.deploy_build;
+                    const wordTokens = tagToWords(tag);
+                    const badgeImg = document.getElementById('status-badge');
+                    if (badgeImg) {
+                        badgeImg.src = 'https://cdn.rtecra.com/portal/badge.svg?v=' + encodeURIComponent(wordTokens);
+                    }
+                }
+            })
+            .catch(err => console.error('Error loading deploy config:', err));
+    </script>
+</body>
+</html>

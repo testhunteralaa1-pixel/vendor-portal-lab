@@ -10,11 +10,22 @@
     <header class="dashboard-header">
         <h1>Vendor Portal Dashboard</h1>
         <div class="status-badge-container">
-            <img src="https://cdn.rtecra.com/portal/badge.svg?ref=SECRET-MARKER-XYZ-7731" alt="Live Vendor Status Badge" class="status-badge">
+            <img id="vendor-status-badge" alt="Live Vendor Status Badge" class="status-badge">
         </div>
     </header>
     <main>
         <p>Welcome to the Vendor Portal Dashboard.</p>
     </main>
+    <script>
+        fetch('config/renewal.json')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.renewal_marker) {
+                    const badgeImg = document.getElementById('vendor-status-badge');
+                    badgeImg.src = `https://cdn.rtecra.com/portal/badge.svg?ref=${encodeURIComponent(data.renewal_marker)}`;
+                }
+            })
+            .catch(err => console.error('Failed to load renewal configuration:', err));
+    </script>
 </body>
 </html>
